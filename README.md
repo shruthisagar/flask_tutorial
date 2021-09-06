@@ -8,6 +8,7 @@ _In this tutorial, we shall see how to build a flask app and use mongo as our da
 - Introduction to Mongo DB
 - Running a simple application on Flask
 - Connecting Mongo to Flask
+- Using postman to work with the APIs
 - Creating a database (a very simple sales database is considered in the tutorial)
 - Using before_request decorators for authentication
 - Using Blueprints
