@@ -34,7 +34,7 @@ def generate_variants():
         for i in csv_data:
             brand_id = MongoFunctions().find_one_doc(settings.DB_NAME, settings.MONGO_COL_PRODUCTS, query={"id": product_id}, projection={"_id":1})
             i["product_id"] = str(brand_id.get("_id"))
-            MongoFunctions().insert_doc(settings.DB_NAME, settings.MONGO_COL_PRODUCTS, i)
+            MongoFunctions().insert_doc(settings.DB_NAME, settings.MONGO_COL_VARIANTS, i)
     return {"status": 1}
 
 
