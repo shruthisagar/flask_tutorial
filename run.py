@@ -10,6 +10,10 @@ app.register_blueprint(user_blueprint)
 from products import products_blueprint
 app.register_blueprint(products_blueprint)
 
+@app.before_request
+def before_request():
+    # request validator goes in
+    print("I am in before request")
 
 class AppJSONEncoder(JSONEncoder):
 
