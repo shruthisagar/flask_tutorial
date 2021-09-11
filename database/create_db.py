@@ -30,8 +30,9 @@ def generate_products():
 def generate_variants():
     with open('variants.csv',"r") as f:
         csv_data = csv.DictReader(f)
-        product_id=str(randint(1,1000))
+        
         for i in csv_data:
+            product_id=str(randint(1,1000))
             brand_id = MongoFunctions().find_one_doc(settings.DB_NAME, settings.MONGO_COL_PRODUCTS, query={"id": product_id}, projection={"_id":1})
             i["product_id"] = str(brand_id.get("_id"))
             MongoFunctions().insert_doc(settings.DB_NAME, settings.MONGO_COL_VARIANTS, i)

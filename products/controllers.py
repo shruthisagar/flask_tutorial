@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 from mongo_functions import MongoFunctions
 import settings
 
@@ -29,3 +30,61 @@ class ProductController():
         return products_aggregate
         # return products_list_mongo
 
+    def get_product_by_id(self, product_id):
+        return self.mongo_functions.find_one_doc({"_id": ObjectId(product_id)})
+    
+    def get_all_products_variants(self):
+        pipeline = [
+            {
+                '$group': {
+                    '_id': {
+                        '$toObjectId': '$product_id'
+                    }, 
+                    'variants': {
+                        '$push': {
+                            'id': '$id', 
+                            '_id': '$_id', 
+                            'variant_name': '$variant_name', 
+                            'price': {
+                                '$convert': {
+                                    'input': '$price', 
+                                    'to': 'double'
+                                }
+                            }
+                        }
+                    }
+                }
+            }, {
+                '$lookup': {
+                    'from': 'products', 
+                    'localField': '_id', 
+                    'foreignField': '_id', 
+                    'as': 'products'
+                }
+            }, {
+                '$addFields': {
+                    'product_name': {
+                        '$arrayElemAt': [
+                            '$products.product_name', 0
+                        ]
+                    }, 
+                    'product_sku': {
+                        '$arrayElemAt': [
+                            '$products.product_sku', 0
+                        ]
+                    }
+                }
+            }, {
+                '$sort': {
+                    'product_name': 1
+                }
+            }, {
+                '$skip': 1
+            }, {
+                '$limit': 10
+            }, {
+                '$project': {
+                    'products': 0
+                }
+            }
+        ]
