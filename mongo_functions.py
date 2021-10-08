@@ -26,7 +26,7 @@ class MongoFunctions:
         find_doc = self.client.find_one(query, projection)
         return find_doc
 
-    def find_many(self, query, projection=None):
+    def find_many(self, query={}, projection=None):
         find_doc = self.client.find(query, projection)
         return find_doc
 
