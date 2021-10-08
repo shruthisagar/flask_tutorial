@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from bson.objectid import ObjectId
 from mongo_functions import MongoFunctions
 import settings
@@ -6,6 +7,8 @@ class ProductController():
     def __init__(self) -> None:
         self.mongo_functions = MongoFunctions(db=settings.DB_NAME, \
             collection=settings.MONGO_COL_PRODUCTS)
+        self.mongo_functions_variants = MongoFunctions(db=settings.DB_NAME, \
+            collection=settings.MONGO_COL_VARIANTS)
     
     def get_products(self, request_args):
         skip = int(request_args.get("skip", 0))
@@ -88,3 +91,5 @@ class ProductController():
                 }
             }
         ]
+        products_aggregate = list(self.mongo_functions_variants.aggregate_docs(pipeline))
+        return products_aggregate, HTTPStatus.OK
