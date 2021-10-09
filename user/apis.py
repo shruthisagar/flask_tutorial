@@ -9,7 +9,8 @@ def user():
 
 @user_blueprint.route("/<email_id>", methods=['GET'])
 def get_user_by_email(email_id):
-    return jsonify(UserFunctions().get_user_by_email(email_id))
+    response, status_code = UserFunctions().get_user_by_email(email_id)
+    return jsonify(response), status_code
 
 @user_blueprint.route("/", methods=["POST"])
 def insert_user():
